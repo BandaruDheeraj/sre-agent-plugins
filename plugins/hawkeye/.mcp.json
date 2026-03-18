@@ -1,12 +1,15 @@
 {
   "mcpServers": {
     "hawkeye": {
-      "type": "http",
-      "url": "https://<your-deployment-name>.app.neubird.ai/mcp",
-      "headers": {
-        "X-Hawkeye-Email": "<your-email>",
-        "X-Hawkeye-Password": "<your-password>"
-      }
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://<your-deployment-name>.app.neubird.ai/mcp",
+        "--header",
+        "X-Hawkeye-Email: <your-email>",
+        "--header",
+        "X-Hawkeye-Password: <your-password>"
+      ]
     }
   }
 }

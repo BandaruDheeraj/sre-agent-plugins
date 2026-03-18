@@ -60,6 +60,33 @@ Hawkeye supports two authentication methods. Choose the one that best fits your 
 - Hawkeye supports connections to AWS, Azure, GCP, Datadog, PagerDuty, New Relic, Grafana, and other monitoring platforms
 - At least one project configured with connected data sources
 
+## MCP Server Connection
+
+The Hawkeye MCP server uses `mcp-remote` as a proxy to connect to the remote endpoint. The `.mcp.json` configuration uses a `command`/`args` pattern:
+
+```json
+{
+  "mcpServers": {
+    "hawkeye": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://<your-deployment-name>.app.neubird.ai/mcp",
+        "--header",
+        "X-Hawkeye-Email: your@email.com",
+        "--header",
+        "X-Hawkeye-Password: your-password"
+      ]
+    }
+  }
+}
+```
+
+Replace `<your-deployment-name>`, email, and password with your actual values.
+
+> [!IMPORTANT]
+> This requires **Node.js 20+** installed. The `mcp-remote` package is installed automatically via `npx`.
+
 ## Add the connector in Azure portal
 
 1. Navigate to your SRE Agent resource
@@ -67,29 +94,16 @@ Hawkeye supports two authentication methods. Choose the one that best fits your 
 3. Select **NeuBird Hawkeye** and select **Next**
 4. Configure the connector:
 
-   **For Email/Password authentication:**
-
    | Field | Value |
    |-------|-------|
    | **Name** | `hawkeye` |
-   | **Connection type** | Streamable-HTTP (pre-selected) |
-   | **URL** | `https://<your-deployment-name>.app.neubird.ai/mcp` |
-   | **X-Hawkeye-Email** | Your Hawkeye account email |
-   | **X-Hawkeye-Password** | Your Hawkeye account password |
-
-   **For Bearer token authentication:**
-
-   | Field | Value |
-   |-------|-------|
-   | **Name** | `hawkeye` |
-   | **Connection type** | Streamable-HTTP (pre-selected) |
-   | **URL** | `https://<your-deployment-name>.app.neubird.ai/mcp` |
-   | **Authorization** | `Bearer <your-token>` |
+   | **Command** | `npx` |
+   | **Args** | `mcp-remote https://<your-deployment-name>.app.neubird.ai/mcp --header "X-Hawkeye-Email: your@email.com" --header "X-Hawkeye-Password: your-password"` |
 
 5. Select **Next** to review, then **Add connector**
 
 > [!IMPORTANT]
-> Keep your credentials secure. If using email/password headers, ensure the account has a strong, unique password. If using a bearer token, store it securely and rotate it regularly.
+> Keep your credentials secure. Ensure the account has a strong, unique password. For production use, create a dedicated service account rather than using personal credentials.
 
 ## Available capabilities
 
